@@ -44,7 +44,7 @@ const {
   const path = require('path')
   const prefix = config.PREFIX
   
-  const ownerNumber = ['94741259325']
+  const ownerNumber = config.OWNER_NUM;
   
   const tempDir = path.join(os.tmpdir(), 'cache-temp')
   if (!fs.existsSync(tempDir)) {
@@ -111,7 +111,7 @@ const port = process.env.PORT || 9090;
   require("./plugins/" + plugin);
   }
   });
-  console.log('Plugins installed SUCCESSFULLY ✅')
+  console.log('Plugins installed Successfully ✅')
   console.log('Bot connected to WhatsApp ✅')
   
   let up = `> Connected Successfully 🩷🎀 .
@@ -119,13 +119,13 @@ const port = process.env.PORT || 9090;
 ┃ _KING-SANDESH-MD-V2_
 ╰───────────❍
 ╭───❍「 *🌐BOT WEB PAGE* 」
-┃ https://king-sandesh-md-ofc-web.pages.dev/
+┃ Comin Soon..................
 ╰───────────❍
 ╭───❍「 *🫳JOIN CHANNEL* 」
-┃ https://whatsapp.com/channel/0029Vb5saAU4Y9lfzhgBmS2N
+┃ Comin Soon..................
 ╰───────────❍
 ╭───❍「 *👤BOT OWNER* 」
-┃ _Mr Sandesh Bhashana_
+┃ _Mr PIKO_
 ╰───────────❍
 ╭───❍「 *📈SYSTEM STATUS* 」
 ┃ ░░░░░░░░░░░░░░░░░░░ 100%
@@ -134,9 +134,9 @@ const port = process.env.PORT || 9090;
 ┃ _Configure Your Prefix_ ${prefix}
 ╰───────────❍
 ╭───❍「 *⚙️AUTOMATION BY* 」
-┃ *King-Sandesh Md V2 💸*
+┃ *PIKO-BOT V2 💸*
 ╰───────────❍`;
-    conn.sendMessage(conn.user.id, { image: { url: `https://files.catbox.moe/m5drmn.png` }, caption: up })
+    conn.sendMessage(conn.user.id, { image: { url: `https://raw.githubusercontent.com/Manmitha96/BOT-PHOTOS/refs/heads/main/BotMenuPhoto/MainBotmenu.jpg` }, caption: up })
   }
   })
   conn.ev.on('creds.update', saveCreds)
@@ -175,7 +175,7 @@ const port = process.env.PORT || 9090;
     }
   if (mek.key && mek.key.remoteJid === 'status@broadcast' && config.AUTO_STATUS_REACT === "true"){
     const jawadlike = await conn.decodeJid(conn.user.id);
-    const emojis = ['❤️', '💸', '😇', '🍂', '💥', '💯', '🔥', '💫', '💎', '💗', '🤍', '🖤', '👀', '🙌', '🙆', '🚩', '🥰', '💐', '😎', '🤎', '✅', '🫀', '🧡', '😁', '😄', '🌸', '🕊️', '🌷', '⛅', '🌟', '🗿', '🇵🇰', '💜', '💙', '🌝', '🖤', '💚'];
+    const emojis = ['❤️', '💸', '😇', '🍂', '💥', '💯', '🔥', '💫', '💎', '💗', '🤍', '🖤', '👀', '🙌', '🙆', '🚩', '🥰', '💐', '😎', '🤎', '✅', '🫀', '🧡', '😁', '😄', '🌸', '🕊️', '🌷', '⛅', '🌟', '🗿', '💜', '💙', '🌝', '🖤', '💚'];
     const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
     await conn.sendMessage(mek.key.remoteJid, {
       react: {
@@ -224,7 +224,7 @@ const port = process.env.PORT || 9090;
   }
 
   const udp = botNumber.split('@')[0];
-    const jawadop = ['94741259325', '94763582665', '94775492866'];
+    const jawadop = ['94726939427', '94756473404'];
     
     const ownerFilev2 = JSON.parse(fs.readFileSync('./lib/sudo.json', 'utf-8'));  
     
@@ -799,7 +799,7 @@ END:VCARD`,
   }
   
   app.get("/", (req, res) => {
-  res.send("KING-SANDESH-MD V-2 STARTED NOW SAFELY ✅");
+  res.send("PIKO-BOT V-2 STARTED NOW SAFELY ✅");
   });
   app.listen(port, () => console.log(`Server listening on port http://localhost:${port}`));
   setTimeout(() => {
