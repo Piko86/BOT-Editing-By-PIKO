@@ -14,7 +14,7 @@ cmd({
 async (conn, mek, m, { from, isGroup, senderNumber, isAdmins, isBotAdmins, reply }) => {
     try {
         if (!isGroup) return reply("❌ This command can only be used in groups.");
-        if (!isAdmins) return reply("❌ Only group admins can use this command.");
+        if (!isSenderAdmin) return reply("❌ Only group admins can use this command.");
         if (!isBotAdmin) return reply("❌ I need to be an admin to mute the group.");
 
         await conn.groupSettingUpdate(from, "announcement");
