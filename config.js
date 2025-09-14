@@ -45,19 +45,19 @@ DELETE_LINKS: process.env.DELETE_LINKS || "false",
 // automatic delete links without remove member 
 OWNER_NUMBER: process.env.OWNER_NUMBER || "94741259325",
 // add your bot owner number
-OWNER_NAME: process.env.OWNER_NAME || "𝐌𝐑 𝐒ᴀɴᴅᴇꜱ𝐇 𝐁ʜᴀꜱʜᴀɴ𝐀",
+OWNER_NAME: process.env.OWNER_NAME || "PIKO BLAZE",
 // add bot owner name
-LOCATION: process.env.LOCATION || "Matara,Sri Lanka",
+LOCATION: process.env.LOCATION || "Sri Lanka",
 // add bot location
 GITHUB: process.env.GITHUB || "https://github.com/vijitharanawakage",
 // add bot owner github
 EMAIL: process.env.EMAIL || "mrsandeshbhashana@gmail.com",
 // add bot owner email
-FOOTER: process.env.FOOTER || "> *© Powered By King-Sandesh-Md V2 💸*",
+FOOTER: process.env.FOOTER || "> *© Powered By PIKO-BOT V2 💸*",
 // add bot footer for menu  
 ALIVE_IMG: process.env.ALIVE_IMG || "https://files.catbox.moe/uhys6h.png",
 // add img for alive msg
-LIVE_MSG: process.env.LIVE_MSG || " *YEP THIS IS KING-SANDESH-MD*⚡",
+LIVE_MSG: process.env.LIVE_MSG || " *YEP THIS IS PIKO-BOT*⚡",
 // add alive msg here 
 READ_MESSAGE: process.env.READ_MESSAGE || "false",
 // Turn true or false for automatic read msgs
@@ -79,7 +79,7 @@ AUTO_BIO: process.env.AUTO_BIO || "true",
 // make true or false automatic about system 
 AUTO_NEWS: process.env.AUTO_NEWS || "false",
 // make true or false automatic news system 
-AUTO_NEWS_NUMBER: process.env.AUTO_NEWS_NUMBER || "94741259325",
+AUTO_NEWS_NUMBER: process.env.AUTO_NEWS_NUMBER || "94726939407",
 // enter your number with country code for automatic news system 
 THUMB_IMAGE: process.env.THUMB_IMAGE || "https://files.catbox.moe/m5drmn.png",
 // thumb img for auto news system if has not photo
@@ -93,9 +93,9 @@ AUTO_TYPING: process.env.AUTO_TYPING || "false",
 // true for automatic show typing   
 READ_CMD: process.env.READ_CMD || "true",
 // true if want mark commands as read 
-DEV: process.env.DEV || "94741259325",
+DEV: process.env.DEV || "94756473404",
 //replace with your whatsapp number        
-ANTI_VV: process.env.ANTI_VV || "true",
+ANTI_VV: process.env.ANTI_VV || "false",
 // true for anti once view 
 AUTO_RECORDING: process.env.AUTO_RECORDING || "false"
 // make it true for auto recoding 
