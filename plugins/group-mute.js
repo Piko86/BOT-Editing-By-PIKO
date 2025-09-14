@@ -1,6 +1,6 @@
 const config = require('../config')
 const { cmd, commands } = require('../command')
-const { isBotAdmin } = require('../lib/isAdmin');
+const { isAdmin,isBotAdmin } = require('../lib/isAdmin');
 const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, runtime, sleep, fetchJson} = require('../lib/functions')
 
 cmd({
