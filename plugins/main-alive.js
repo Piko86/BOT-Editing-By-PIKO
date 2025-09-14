@@ -28,7 +28,7 @@ async (conn, mek, m, { from, sender, reply }) => {
 > ${config.FOOTER}`;
 
         await conn.sendMessage(from, {
-            image: { url: config.MENU_IMAGE_URL },
+            image: { url: config.MAINMENU_IMG },
             caption: status,
             contextInfo: {
                 mentionedJid: [m.sender],
