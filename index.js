@@ -289,18 +289,16 @@ async function connectToWA() {
         const groupName = isGroup ? (groupMetadata && groupMetadata.subject) : ''
         const participants = isGroup ? (groupMetadata && groupMetadata.participants) : ''
         const groupAdmins = isGroup && participants ? await getGroupAdmins(participants) : ''
-
-        const groupMetadata2 = await conn.groupMetadata(chatId);
             
             const botId = conn.user.id.split(':')[0] + '@s.whatsapp.net';
             
-            const participant2 = groupMetadata2.participants.find(p => 
+            const participant2 = groupMetadata.participants.find(p => 
                 p.id === senderId || 
                 p.id === senderId.replace('@s.whatsapp.net', '@lid') ||
                 p.id === senderId.replace('@lid', '@s.whatsapp.net')
             );
             
-            const bot = groupMetadata2.participants.find(p => 
+            const bot = groupMetadata.participants.find(p => 
                 p.id === botId || 
                 p.id === botId.replace('@s.whatsapp.net', '@lid')
             );
