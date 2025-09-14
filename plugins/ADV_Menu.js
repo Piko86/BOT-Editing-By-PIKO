@@ -481,7 +481,7 @@ ${config.FOOTER}`,
 ${config.FOOTER}`,
                 image: true
             }
-        };
+        }
 
         // Message handler with improved error handling
         const handler = async (msgData) => {
