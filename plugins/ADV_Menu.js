@@ -26,6 +26,13 @@ cmd({
       let formattedUptime = hours > 0 ? `${hours} hours, ${minutes} minutes, ${seconds} seconds` : `${minutes} minutes, ${seconds} seconds`;
         // Count total commands
         const totalCommands = Object.keys(commands).length;
+
+        // Fix: define contextInfo to prevent ReferenceError
+       const contextInfo = {
+       forwardingScore: 0,
+       isForwarded: false
+   };
+
         
         const menuCaption = `👋 *HELLO*
 *╭─「 ᴄᴏᴍᴍᴀɴᴅꜱ ᴘᴀɴᴇʟ」*
