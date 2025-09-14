@@ -1,18 +1,18 @@
-# KING-SANDESH-MD-V2
+# PKO-BOT-V2
 🫧 𝙺𝙸𝙽𝙶 𝚂𝙰𝙽𝙳𝙴𝚂𝙷 𝙼𝚄𝙻𝚃𝙸 𝙳𝙴𝚅𝙸𝙲𝙴 𝙸𝚂 𝙰 𝚂𝙸𝙼𝙿𝙻𝙴 𝙶𝙸𝚃𝙷𝚄𝙱 𝙿𝚁𝙾𝙶𝚁𝙰𝙼𝙼𝙴 𝚆𝙷𝙸𝙲𝙷 𝚈𝙾𝚄 𝙶𝙸𝚅𝙴 𝙼𝙾𝚁𝙴 𝙷𝙴𝙻𝙿.𝙸𝚃 𝙸𝚂 𝙼𝙰𝙳𝙴 𝙱𝚈 𝙿𝚁𝙾𝙵𝙴𝚂𝚂𝙾𝚁 𝚂𝙰𝙽𝙳𝙴𝚂𝙷 𝙱𝙷𝙰𝚂𝙷𝙰𝙽𝙰.𝙺𝙸𝙽𝙶 𝚂𝙰𝙽𝙳𝙴𝚂𝙷 𝚆𝙰 𝙱𝙾𝚃 𝙸𝚂 𝚃𝙷𝙸𝚁𝙳 𝙿𝙰𝚁𝚃𝚈 𝙰𝙿𝙿𝙻𝙸𝙲𝙰𝚃𝙸𝙾𝙽,𝚆𝙷𝙸𝙲𝙷 𝚆𝙴 𝙲𝙰𝙽 𝙿𝚁𝙾𝚄𝙳.
 
 <p align="center"> 
-<u>😁 𝐊𝐈𝐍𝐆 𝐒𝐀𝐍𝐃𝐄𝐒𝐇 𝐌𝐃 𝐕❷ | ᴡʜᴀᴛsᴀᴘᴘ ᴜsᴇʀ ʙᴏᴛ ʙʏ ᴍʀ ᴜɴᴋɴᴏᴡɴ 🤫</u>
+<u>😁 PKO-BOT 𝐕❷ | ᴡʜᴀᴛsᴀᴘᴘ ᴜsᴇʀ ʙᴏᴛ ʙʏ ᴍʀ ᴜɴᴋɴᴏᴡɴ 🤫</u>
 </p>
 <p align="center">
 <img src="https://raw.githubusercontent.com/Manmitha96/BOT-PHOTOS/refs/heads/main/BotMenuPhoto/MainBotmenu.jpg"/>
 </p>
 <p align="center">
   <a href="https://git.io/typing-svg">
-    <img src="https://readme-typing-svg.demolab.com?font=Ribeye&size=50&pause=1000&color=33ff00&center=true&width=910&height=100&lines=KING+SANDESH;REMASTERD+EDITION;VERSION+2" alt="Typing SVG">
+    <img src="https://readme-typing-svg.demolab.com?font=Ribeye&size=50&pause=1000&color=33ff00&center=true&width=910&height=100&lines=PIKO+BOT;REMASTERD+EDITION;VERSION+2" alt="Typing SVG">
   </a>
   <a href="#"><img src="http://readme-typing-svg.herokuapp.com?color=d1fa02&center=true&vCenter=true&multiline=false&lines=MR+UNKNOWN'S+BEST+WA+BOT" alt="">
-  <a href="#"><img src="http://readme-typing-svg.herokuapp.com?color=9984ff&center=true&vCenter=true&multiline=false&lines=OWNER :-+MR+SANDESH+BHASHANA" alt="">
+  <a href="#"><img src="http://readme-typing-svg.herokuapp.com?color=9984ff&center=true&vCenter=true&multiline=false&lines=OWNER :-+MR+PIKO+BLAZE" alt="">
 </p>
 <p align="center">
 <a href="#"><img title="Creator" src="https://img.shields.io/badge/Creator-Mr Unknown-red.svg?style=for-the-badge&logo=github"></a>
@@ -35,7 +35,7 @@ ___________________
 ### Please Rate Us ✨ & [Follow For Me Notify My Updates 🤪](https://github.com/vijitharanawakage)
 <b>Bot Version -> 1 </b>
 # 
-🫧KING SANDESH MULTI DEVICE Bot is,
+🫧PKO-BOT MULTI DEVICE Bot is,
 
     An Easy 3rd Party Programming Project to Use WhatsApp Help | මෙය තෙවන පාර්ශවීය වට්සැප් පහසුකම් ලබා දෙන ප්‍රෝග්‍රෑමින් ව්‍යාපෘතියකි.
 
