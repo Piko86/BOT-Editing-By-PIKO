@@ -29,7 +29,7 @@ ANTI_LINK: process.env.ANTI_LINK || "false",
 // make anti link true,false for groups 
 MENTION_REPLY: process.env.MENTION_REPLY || "true",
 // make true if want auto voice reply if someone menetion you 
-MENU_IMAGE_URL: process.env.MENU_IMAGE_URL || "https://files.catbox.moe/m5drmn.png",
+MAINMENU_IMG: process.env.MAINMENU_IMG || "https://raw.githubusercontent.com/Manmitha96/BOT-PHOTOS/refs/heads/main/BotMenuPhoto/MainBotmenu.jpg",
 // add custom menu and mention reply image url
 PREFIX: process.env.PREFIX || ".",
 // add your prefix for bot   
