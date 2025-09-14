@@ -1,48 +1,21 @@
-// plugins/menu.js
+const fs = require('fs');
+const config = require('../config');
+const { cmd, commands } = require('../command');
+const { runtime } = require('../lib/functions');
+const axios = require('axios');
 
-const { cmd } = require("../command");
-const config = require("../config");
-const os = require("os");
-
-// Enhanced state storage with persistent memory
-let menuReplyState = {};
-
-// Auto cleanup function - runs every minute
-setInterval(() => {
-  const now = Date.now();
-  Object.keys(menuReplyState).forEach(number => {
-    // Remove states older than 8 minutes (480,000 ms)
-    if (now - menuReplyState[number].timestamp > 480000) {
-      console.log(`🧹 Cleaning up menu state for ${number} (expired after 8 minutes)`);
-      delete menuReplyState[number];
-    }
-  });
-}, 60000); // Check every minute
-
-cmd(
-  {
+cmd({
     pattern: "menu",
-    alias: ["getmenu"],
-    react: "📜",
-    desc: "Get command list",
-    category: "main",
-    filename: __filename,
-  },
-  async (robin, mek, m, { from, senderNumber, pushname, reply }) => {
+    desc: "Show interactive menu system",
+    category: "menu",
+    react: "🧾",
+    filename: __filename
+}, async (conn, mek, m, { from, reply }) => {
     try {
-      let uptime = (process.uptime() / 60).toFixed(2);
-      let used = process.memoryUsage().heapUsed / 1024 / 1024;
-      let totalRam = Math.round(require('os').totalmem / 1024 / 1024);
-      let ramUsage = `${Math.round(used * 100) / 100}MB / ${totalRam}MB`;
-
-      // Convert uptime to hours, minutes, seconds
-      let uptimeSeconds = Math.floor(process.uptime());
-      let hours = Math.floor(uptimeSeconds / 3600);
-      let minutes = Math.floor((uptimeSeconds % 3600) / 60);
-      let seconds = uptimeSeconds % 60;
-      let formattedUptime = hours > 0 ? `${hours} hours, ${minutes} minutes, ${seconds} seconds` : `${minutes} minutes, ${seconds} seconds`;
-
-      let madeMenu = `👋 *HELLO  @${pushname}*
+        // Count total commands
+        const totalCommands = Object.keys(commands).length;
+        
+        const menuCaption = `👋 *HELLO  @${pushname}*
 *╭─「 ᴄᴏᴍᴍᴀɴᴅꜱ ᴘᴀɴᴇʟ」*
 *│◈ 𝚁𝙰𝙼 𝚄𝚂𝙰𝙶𝙴 -* ${ramUsage}
 *│◈ 𝚁𝚄𝙽𝚃𝙸𝙼𝙴 -* ${formattedUptime}
@@ -67,100 +40,46 @@ cmd(
 
 *㋛ 𝙿𝙾𝚆𝙴𝚁𝙳 𝙱𝚈 𝙿_𝙸_𝙺_𝙾 〽️*`;
 
-      const menuMessage = await robin.sendMessage(
-        from,
-        {
-          image: { url: config.MAINMENU_IMG },
-          caption: madeMenu,
-          contextInfo: {
-            mentionedJid: [`${senderNumber}@s.whatsapp.net`]
-          }
-        },
-        { quoted: mek }
-      );
 
-      // Store menu state with persistent memory
-      menuReplyState[senderNumber] = {
-        expecting: true,
-        timestamp: Date.now(),
-        messageId: menuMessage.key.id,
-        type: 'main_menu',
-        chatId: from,
-        lastMenuMessageId: menuMessage.key.id
-      };
+        // Function to send menu image with timeout
+        const sendMenuImage = async () => {
+            try {
+                return await conn.sendMessage(
+                    from,
+                    {
+                        image: { url: config.MAINMENU_IMG },
+                        caption: menuCaption,
+                        contextInfo: contextInfo
+                    },
+                    { quoted: mek }
+                );
+            } catch (e) {
+                console.log('Image send failed, falling back to text');
+                return await conn.sendMessage(
+                    from,
+                    { text: menuCaption, contextInfo: contextInfo },
+                    { quoted: mek }
+                );
+            }
+        };
 
-      console.log(`📋 Menu activated for ${senderNumber} - Active for 8 minutes`);
-
-    } catch (e) {
-      console.error(e);
-      reply(`Error: ${e.message}`);
-    }
-  }
-);
-
-// Enhanced menu navigation handler - REPLY ONLY
-cmd(
-  {
-    on: "body",
-    fromMe: false,
-  },
-  async (robin, mek, m, { from, senderNumber, body, reply, quoted }) => {
-    try {
-      // Check if user has an active menu state
-      const userState = menuReplyState[senderNumber];
-      if (!userState || !userState.expecting) return;
-
-      // 🎯 CRITICAL: Only accept if this is a REPLY to a menu message
-      if (!quoted) return; // Must be a reply
-
-      // Check if replying to any menu message (more flexible checking)
-      const quotedId = quoted.id || quoted.key?.id;
-      const isReplyToMenu = quotedId === userState.messageId || 
-                           quotedId === userState.lastMenuMessageId;
-      
-      if (!isReplyToMenu) return; // Must reply to menu message
-
-      // Parse the user input
-      const userInput = body.trim();
-      const selected = parseInt(userInput);
-
-      // Validate number selection (1-10)
-      if (!isNaN(selected) && selected >= 1 && selected <= 10) {
-        // Send the appropriate submenu
-        const submenuMessage = await sendSubMenu(robin, from, selected, mek, reply, senderNumber);
-        
-        // Update user state but KEEP expecting more replies
-        if (submenuMessage && submenuMessage.key) {
-          userState.timestamp = Date.now(); // Refresh the 8-minute timer
-          userState.expecting = true; // Keep expecting replies!
-          userState.lastMenuMessageId = submenuMessage.key.id; // Track latest message
+        // Send image with timeout
+        let sentMsg;
+        try {
+            sentMsg = await Promise.race([
+                sendMenuImage(),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('Image send timeout')), 10000))
+            ]);
+        } catch (e) {
+            console.log('Menu send error:', e);
+            sentMsg = await conn.sendMessage(
+                from,
+                { text: menuCaption, contextInfo: contextInfo },
+                { quoted: mek }
+            );
         }
-        
-        console.log(`📋 User ${senderNumber} selected menu ${selected} via REPLY - Menu still active`);
-      } else {
-        reply("❌ Please reply with a valid number (1-10) to select a category.");
-      }
-    } catch (e) {
-      console.error("Menu navigation error:", e);
-    }
-  }
-);
 
-// Enhanced submenu function that returns message info
-async function sendSubMenu(robin, from, categoryNumber, mek, reply, senderNumber) {
-  let uptime = (process.uptime() / 60).toFixed(2);
-  let used = process.memoryUsage().heapUsed / 1024 / 1024;
-  let totalRam = Math.round(require('os').totalmem / 1024 / 1024);
-  let ramUsage = `${Math.round(used * 100) / 100}MB / ${totalRam}MB`;
-
-  // Convert uptime to hours, minutes, seconds
-  let uptimeSeconds = Math.floor(process.uptime());
-  let hours = Math.floor(uptimeSeconds / 3600);
-  let minutes = Math.floor((uptimeSeconds % 3600) / 60);
-  let seconds = uptimeSeconds % 60;
-  let formattedUptime = hours > 0 ? `${hours} hours, ${minutes} minutes, ${seconds} seconds` : `${minutes} minutes, ${seconds} seconds`;
-
-  const subMenus = {
+        const subMenus = {
     1: {
       title: "OWNER",
       image: "https://raw.githubusercontent.com/Manmitha96/BOT-PHOTOS/refs/heads/main/BotMenuPhoto/Owner.png",
@@ -289,8 +208,14 @@ async function sendSubMenu(robin, from, categoryNumber, mek, reply, senderNumber
     selectedMenu.commands.forEach(cmd => {
       commandList += `*╭──────────●●►*\n*│Command:* ${cmd.name}\n*│Use:* ${cmd.use}\n*╰──────────●●►*\n\n`;
     });
+        
+        const messageID = sentMsg.key.id;
 
-    const menuText = `👋 *HELLO*
+        // Menu data (complete version)
+        const menuData = {
+            '1': {
+                title: "📥 *Download Menu* 📥",
+                content: `👋 *HELLO*
 *╭─「 ᴄᴏᴍᴍᴀɴᴅꜱ ᴘᴀɴᴇʟ」*
 *│◈ 𝚁𝙰𝙼 𝚄𝚂𝙰𝙶𝙴 -* ${ramUsage}
 *│◈ 𝚁𝚄𝙽𝚃𝙸𝙼𝙴 -* ${formattedUptime}
@@ -305,48 +230,322 @@ ${commandList}➠ *Total Commands in ${selectedMenu.title}*: ${selectedMenu.comm
 *Reply with another number (1-10) for more categories!*
 
 *㋛ 𝙿𝙾𝚆𝙴𝚁𝙳 𝙱𝚈 𝙿_𝙸_𝙺_𝙾 〽️*`;
+            '2': {
+                title: "👥 *Group Menu* 👥",
+                content: `╭━━━〔 *𝙶𝚁𝙾𝚄𝙿 𝙼𝙴𝙽𝚄* 〕━━━┈⊷
+┃★╭──────────────
+┃★│ 🛠️ *Management*
+┃★│ • grouplink
+┃★│ • kickall
+┃★│ • kickall2
+┃★│ • kickall3
+┃★│ • add @user
+┃★│ • remove @user
+┃★│ • kick @user
+┃★╰──────────────
+┃★╭──────────────
+┃★│ ⚡ *Admin Tools*
+┃★│ • promote @user
+┃★│ • demote @user
+┃★│ • dismiss 
+┃★│ • revoke
+┃★│ • mute [time]
+┃★│ • unmute
+┃★│ • lockgc
+┃★│ • unlockgc
+┃★╰──────────────
+┃★╭──────────────
+┃★│ 🏷️ *Tagging*
+┃★│ • tag @user
+┃★│ • hidetag [msg]
+┃★│ • tagall
+┃★│ • tagadmins
+┃★│ • invite
+┃★╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
+${config.FOOTER}`,
+                image: true
+            },
+            '3': {
+                title: "😄 *Fun Menu* 😄",
+                content: `╭━━━〔 *𝙵𝚄𝙽 𝙼𝙴𝙽𝚄* 〕━━━┈⊷
+┃★╭──────────────
+┃★│ 🎭 *Interactive*
+┃★│ • shapar
+┃★│ • rate @user
+┃★│ • insult @user
+┃★│ • hack @user
+┃★│ • ship @user1 @user2
+┃★│ • character
+┃★│ • pickup
+┃★│ • joke
+┃★╰──────────────
+┃★╭──────────────
+┃★│ 😂 *Reactions*
+┃★│ • hrt
+┃★│ • hpy
+┃★│ • syd
+┃★│ • anger
+┃★│ • shy
+┃★│ • kiss
+┃★│ • mon
+┃★│ • cunfuzed
+┃★╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
+${config.FOOTER}`,
+                image: true
+            },
+            '4': {
+                title: "👑 *Owner Menu* 👑",
+                content: `╭━━━〔 *𝙾𝚆𝙽𝙴𝚁 𝙼𝙴𝙽𝚄* 〕━━━┈⊷
+┃★╭──────────────
+┃★│ ⚠️ *Restricted*
+┃★│ • block @user
+┃★│ • unblock @user
+┃★│ • fullpp [img]
+┃★│ • setpp [img]
+┃★│ • restart
+┃★│ • shutdown
+┃★│ • updatecmd
+┃★╰──────────────
+┃★╭──────────────
+┃★│ ℹ️ *Info Tools*
+┃★│ • gjid
+┃★│ • jid @user
+┃★│ • listcmd
+┃★│ • allmenu
+┃★╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
+${config.FOOTER}`,
+                image: true
+            },
+            '5': {
+                title: "🤖 *AI Menu* 🤖",
+                content: `╭━━━〔 *𝙰𝙸 𝙼𝙴𝙽𝚄* 〕━━━┈⊷
+┃★╭──────────────
+┃★│ 💬 *Chat AI*
+┃★│ • ai [query]
+┃★│ • gpt3 [query]
+┃★│ • gpt2 [query]
+┃★│ • gptmini [query]
+┃★│ • gpt [query]
+┃★│ • meta [query]
+┃★╰──────────────
+┃★╭──────────────
+┃★│ 🖼️ *Image AI*
+┃★│ • imagine [text]
+┃★│ • imagine2 [text]
+┃★╰──────────────
+┃★╭──────────────
+┃★│ 🔍 *Specialized*
+┃★│ • blackbox [query]
+┃★│ • luma [query]
+┃★│ • dj [query]
+┃★│ • khan [query]
+┃★╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
+${config.FOOTER}`,
+                image: true
+            },
+            '6': {
+                title: "🎎 *Anime Menu* 🎎",
+                content: `╭━━━〔 *𝙰𝙽𝙸𝙼𝙴 𝙼𝙴𝙽𝚄* 〕━━━┈⊷
+┃★╭──────────────
+┃★│ 🖼️ *Images*
+┃★│ • fack
+┃★│ • dog
+┃★│ • awoo
+┃★│ • garl
+┃★│ • waifu
+┃★│ • neko
+┃★│ • megnumin
+┃★│ • maid
+┃★│ • loli
+┃★╰──────────────
+┃★╭──────────────
+┃★│ 🎭 *Characters*
+┃★│ • animegirl
+┃★│ • animegirl1-5
+┃★│ • anime1-5
+┃★│ • foxgirl
+┃★│ • naruto
+┃★╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
+${config.FOOTER}`,
+                image: true
+            },
+            '7': {
+                title: "🔄 *Convert Menu* 🔄",
+                content: `╭━━━〔 *𝙲𝙾𝙽𝚅𝙴𝚁𝚃 𝙼𝙴𝙽𝚄* 〕━━━┈⊷
+┃★╭──────────────
+┃★│ 🖼️ *Media*
+┃★│ • sticker [img]
+┃★│ • sticker2 [img]
+┃★│ • emojimix 😎+😂
+┃★│ • take [name,text]
+┃★│ • tomp3 [video]
+┃★╰──────────────
+┃★╭──────────────
+┃★│ 📝 *Text*
+┃★│ • fancy [text]
+┃★│ • tts [text]
+┃★│ • trt [text]
+┃★│ • base64 [text]
+┃★│ • unbase64 [text]
+┃★╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
+${config.FOOTER}`,
+                image: true
+            },
+            '8': {
+                title: "📌 *Other Menu* 📌",
+                content: `╭━━━〔 *𝙾𝚃𝙷𝙴𝚁 𝙼𝙴𝙽𝚄* 〕━━━┈⊷
+┃★╭──────────────
+┃★│ 🕒 *Utilities*
+┃★│ • timenow
+┃★│ • date
+┃★│ • count [num]
+┃★│ • calculate [expr]
+┃★│ • countx
+┃★╰──────────────
+┃★╭──────────────
+┃★│ 🎲 *Random*
+┃★│ • flip
+┃★│ • coinflip
+┃★│ • rcolor
+┃★│ • roll
+┃★│ • fact
+┃★╰──────────────
+┃★╭──────────────
+┃★│ 🔍 *Search*
+┃★│ • define [word]
+┃★│ • news [query]
+┃★│ • movie [name]
+┃★│ • weather [loc]
+┃★╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
+${config.FOOTER}`,
+                image: true
+            },
+            '9': {
+                title: "💞 *Reactions Menu* 💞",
+                content: `╭━━━〔 *𝚁𝙴𝙰𝙲𝚃𝙸𝙾𝙽𝚂 𝙼𝙴𝙽𝚄* 〕━━━┈⊷
+┃★╭──────────────
+┃★│ ❤️ *Affection*
+┃★│ • cuddle @user
+┃★│ • hug @user
+┃★│ • kiss @user
+┃★│ • lick @user
+┃★│ • pat @user
+┃★╰──────────────
+┃★╭──────────────
+┃★│ 😂 *Funny*
+┃★│ • bully @user
+┃★│ • bonk @user
+┃★│ • yeet @user
+┃★│ • slap @user
+┃★│ • kill @user
+┃★╰──────────────
+┃★╭──────────────
+┃★│ 😊 *Expressions*
+┃★│ • blush @user
+┃★│ • smile @user
+┃★│ • happy @user
+┃★│ • wink @user
+┃★│ • poke @user
+┃★╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
+${config.FOOTER}`,
+                image: true
+            },
+            '10': {
+                title: "🏠 *Main Menu* 🏠",
+                content: `╭━━━〔 *𝙼𝙰𝙸𝙽 𝙼𝙴𝙽𝚄* 〕━━━┈⊷
+┃★╭──────────────
+┃★│ ℹ️ *Bot Info*
+┃★│ • ping
+┃★│ • live
+┃★│ • alive
+┃★│ • runtime
+┃★│ • uptime
+┃★│ • repo
+┃★│ • owner
+┃★╰──────────────
+┃★╭──────────────
+┃★│ 🛠️ *Controls*
+┃★│ • menu
+┃★│ • menu2
+┃★│ • restart
+┃★╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
+${config.FOOTER}`,
+                image: true
+            }
+        };
 
-    const submenuMessage = await robin.sendMessage(
-      from,
-      {
-        image: { url: selectedMenu.image },
-        caption: menuText,
-        contextInfo: {
-          mentionedJid: [`${senderNumber}@s.whatsapp.net`]
-        }
-      },
-      { quoted: mek }
-    );
+        // Message handler with improved error handling
+        const handler = async (msgData) => {
+            try {
+                const receivedMsg = msgData.messages[0];
+                if (!receivedMsg?.message || !receivedMsg.key?.remoteJid) return;
 
-    return submenuMessage; // Return message info for tracking
-  }
-}
+                const isReplyToMenu = receivedMsg.message.extendedTextMessage?.contextInfo?.stanzaId === messageID;
+                
+                if (isReplyToMenu) {
+                    const receivedText = receivedMsg.message.conversation || 
+                                      receivedMsg.message.extendedTextMessage?.text;
+                    const senderID = receivedMsg.key.remoteJid;
 
-// Command to check menu status (for debugging)
-cmd(
-  {
-    pattern: "menustatus",
-    desc: "Check menu status",
-    category: "main",
-    filename: __filename,
-  },
-  async (robin, mek, m, { from, senderNumber, reply }) => {
-    try {
-      const userState = menuReplyState[senderNumber];
-      if (userState) {
-        const timeLeft = Math.max(0, 480000 - (Date.now() - userState.timestamp));
-        const minutesLeft = Math.floor(timeLeft / 60000);
-        const secondsLeft = Math.floor((timeLeft % 60000) / 1000);
-        
-        reply(`📋 *Menu Status:* Active\n⏰ *Time Left:* ${minutesLeft}m ${secondsLeft}s\n🎯 *Reply to menu with a number (1-10) to navigate!*`);
-      } else {
-        reply(`📋 *Menu Status:* Inactive\n💡 *Type .menu to activate!*`);
-      }
+                    if (menuData[receivedText]) {
+                        const selectedMenu = menuData[receivedText];
+                     //fbkjbsafkjhbjsahbfjhbasljbflabgljhbjhbbghrbghbhbhbhbhbhb
+                            await conn.sendMessage(senderID, {
+                                react: { text: '✅', key: receivedMsg.key }
+                            });
+
+                        } catch (e) {
+                            console.log('Menu reply error:', e);
+                            await conn.sendMessage(
+                                senderID,
+                                { text: selectedMenu.content, contextInfo: contextInfo },
+                                { quoted: receivedMsg }
+                            );
+                        }
+
+                    } else {
+                        await conn.sendMessage(
+                            senderID,
+                            {
+                                text: `❌ *Invalid Option!* ❌\n\nPlease reply with a number between 1-10 to select a menu.\n\n*Example:* Reply with "1" for Download Menu\n\n${config.FOOTER}`,
+                                contextInfo: contextInfo
+                            },
+                            { quoted: receivedMsg }
+                        );
+                    }
+                }
+            } catch (e) {
+                console.log('Handler error:', e);
+            }
+        };
+
+        // Add listener
+        conn.ev.on("messages.upsert", handler);
+
+        // Remove listener after 5 minutes
+        setTimeout(() => {
+            conn.ev.off("messages.upsert", handler);
+        }, 300000);
+
     } catch (e) {
-      console.error(e);
-      reply(`Error: ${e.message}`);
+        console.error('Menu Error:', e);
+        try {
+            await conn.sendMessage(
+                from,
+                { text: `❌ Menu system is currently busy. Please try again later.\n\n ${config.FOOTER}` },
+                { quoted: mek }
+            );
+        } catch (finalError) {
+            console.log('Final error handling failed:', finalError);
+        }
     }
-  }
-);
-
-module.exports = { menuReplyState, sendSubMenu };
+});
