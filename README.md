@@ -5,7 +5,7 @@
 <u>😁 𝐊𝐈𝐍𝐆 𝐒𝐀𝐍𝐃𝐄𝐒𝐇 𝐌𝐃 𝐕❷ | ᴡʜᴀᴛsᴀᴘᴘ ᴜsᴇʀ ʙᴏᴛ ʙʏ ᴍʀ ᴜɴᴋɴᴏᴡɴ 🤫</u>
 </p>
 <p align="center">
-<img src="https://i.ibb.co/7JttFtvs/khan.png"/>
+<img src="https://raw.githubusercontent.com/Manmitha96/BOT-PHOTOS/refs/heads/main/BotMenuPhoto/MainBotmenu.jpg"/>
 </p>
 <p align="center">
   <a href="https://git.io/typing-svg">
