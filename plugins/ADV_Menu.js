@@ -137,7 +137,7 @@ cmd({
 
 *㋛ 𝙿𝙾𝚆𝙴𝚁𝙳 𝙱𝚈 𝙿_𝙸_𝙺_𝙾 〽️*
 ${config.FOOTER}`,
-                image: true
+                image: true,
                 imageUrl: "https://raw.githubusercontent.com/Manmitha96/BOT-PHOTOS/refs/heads/main/BotMenuPhoto/Owner.png"
             },
             '2': {
