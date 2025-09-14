@@ -16,7 +16,7 @@ cmd({
         // Count total commands
         const totalCommands = Object.keys(commands).length;
         
-        const menuCaption = `👋 *HELLO  @${pushname}*
+        const menuCaption = `👋 *HELLO*
 *╭─「 ᴄᴏᴍᴍᴀɴᴅꜱ ᴘᴀɴᴇʟ」*
 *│◈ 𝚁𝙰𝙼 𝚄𝚂𝙰𝙶𝙴 -* ${ramUsage}
 *│◈ 𝚁𝚄𝙽𝚃𝙸𝙼𝙴 -* ${formattedUptime}
@@ -104,7 +104,7 @@ cmd({
             '1': {
                 title: "📥 *Download Menu* 📥",
                 image: "https://raw.githubusercontent.com/Manmitha96/BOT-PHOTOS/refs/heads/main/BotMenuPhoto/Owner.png",
-                content: `👋 *HELLO* @${pushname}
+                content: `👋 *HELLO*
 *╭─「 ᴄᴏᴍᴍᴀɴᴅꜱ ᴘᴀɴᴇʟ」*
 *│◈ 𝚁𝙰𝙼 𝚄𝚂𝙰𝙶𝙴 -* 56.41MB / 32050MB
 *│◈ 𝚁𝚄𝙽𝚃𝙸𝙼𝙴 -* 11 hours, 56 minutes, 31 seconds
