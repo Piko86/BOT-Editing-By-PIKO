@@ -135,18 +135,10 @@ cmd({
 
 *Reply with another number (1-10) for more categories!*
 
-*㋛ 𝙿𝙾𝚆𝙴𝚁𝙳 𝙱𝚈 𝙿_𝙸_𝙺_𝙾 〽️*`;
-
-       await conn.sendMessage(
-        from,
-        {
-          image: {
-            url: "https://raw.githubusercontent.com/Manmitha96/BOT-PHOTOS/refs/heads/main/2025051319552258.jpg",
-          },
-          caption: desc,
-        },
-        { quoted: mek }
-      );
+*㋛ 𝙿𝙾𝚆𝙴𝚁𝙳 𝙱𝚈 𝙿_𝙸_𝙺_𝙾 〽️*
+${config.FOOTER}`,
+                image: true
+                imageUrl: "https://raw.githubusercontent.com/Manmitha96/BOT-PHOTOS/refs/heads/main/BotMenuPhoto/Owner.png"
             },
             '2': {
                 title: "👥 *Group Menu* 👥",
@@ -418,23 +410,24 @@ ${config.FOOTER}`,
                         const selectedMenu = menuData[receivedText];
                         
                         try {
-                            if (selectedMenu.image) {
-                                await conn.sendMessage(
-                                    senderID,
-                                    {
-                                        image: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/3y5w8z.jpg' },
-                                        caption: selectedMenu.content,
-                                        contextInfo: contextInfo
-                                    },
-                                    { quoted: receivedMsg }
-                                );
-                            } else {
-                                await conn.sendMessage(
-                                    senderID,
-                                    { text: selectedMenu.content, contextInfo: contextInfo },
-                                    { quoted: receivedMsg }
-                                );
-                            }
+                            
+                         if (selectedMenu.image) {
+        await conn.sendMessage(
+        senderID,
+        {
+            image: { url: selectedMenu.imageUrl || config.MENU_IMAGE_URL || 'https://files.catbox.moe/3y5w8z.jpg' },
+            caption: selectedMenu.content,
+            contextInfo: contextInfo
+        },
+         { quoted: receivedMsg }
+       );
+          } else {
+             await conn.sendMessage(
+            senderID,
+            { text: selectedMenu.content, contextInfo: contextInfo },
+            { quoted: receivedMsg }
+    );
+}
 
                             await conn.sendMessage(senderID, {
                                 react: { text: '✅', key: receivedMsg.key }
