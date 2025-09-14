@@ -21,7 +21,7 @@ setInterval(() => {
 
 cmd(
   {
-    pattern: "menuxxx",
+    pattern: "menu",
     alias: ["getmenu"],
     react: "📜",
     desc: "Get command list",
