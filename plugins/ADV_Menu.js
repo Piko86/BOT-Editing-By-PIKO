@@ -113,9 +113,10 @@ cmd(
       // 🎯 CRITICAL: Only accept if this is a REPLY to a menu message
       if (!quoted) return; // Must be a reply
 
-      // Check if replying to any menu message
-      const isReplyToMenu = quoted.id === userState.messageId || 
-                           quoted.id === userState.lastMenuMessageId;
+      // Check if replying to any menu message (more flexible checking)
+      const quotedId = quoted.id || quoted.key?.id;
+      const isReplyToMenu = quotedId === userState.messageId || 
+                           quotedId === userState.lastMenuMessageId;
       
       if (!isReplyToMenu) return; // Must reply to menu message
 
@@ -129,9 +130,11 @@ cmd(
         const submenuMessage = await sendSubMenu(robin, from, selected, mek, reply, senderNumber);
         
         // Update user state but KEEP expecting more replies
-        userState.timestamp = Date.now(); // Refresh the 8-minute timer
-        userState.expecting = true; // Keep expecting replies!
-        userState.lastMenuMessageId = submenuMessage.key.id; // Track latest message
+        if (submenuMessage && submenuMessage.key) {
+          userState.timestamp = Date.now(); // Refresh the 8-minute timer
+          userState.expecting = true; // Keep expecting replies!
+          userState.lastMenuMessageId = submenuMessage.key.id; // Track latest message
+        }
         
         console.log(`📋 User ${senderNumber} selected menu ${selected} via REPLY - Menu still active`);
       } else {
