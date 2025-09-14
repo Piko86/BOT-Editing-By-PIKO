@@ -1,3 +1,4 @@
+
 const fs = require('fs');
 const config = require('../config');
 const { cmd, commands } = require('../command');
@@ -39,7 +40,24 @@ cmd({
 *🌟 Reply the Number you want to select*
 
 *㋛ 𝙿𝙾𝚆𝙴𝚁𝙳 𝙱𝚈 𝙿_𝙸_𝙺_𝙾 〽️*`;
+        
+        const contextInfo = {
+            mentionedJid: [m.sender],
+            forwardingScore: 999,
+            isForwarded: true,
+            forwardedNewsletterMessageInfo: {
+                newsletterJid: '120363402220977044@newsletter',
+                newsletterName: config.OWNER_NAME,
+                serverMessageId: 143
+            }
+        };
 
+        await conn.sendMessage(m.chat, {
+      video: { url: "https://files.catbox.moe/r97f86.mp4" },
+      mimetype: "video/mp4",
+      gifPlayback: true,
+      ptv: true  
+    }, { quoted: mek });
 
         // Function to send menu image with timeout
         const sendMenuImage = async () => {
@@ -47,7 +65,7 @@ cmd({
                 return await conn.sendMessage(
                     from,
                     {
-                        image: { url: config.MAINMENU_IMG },
+                        image: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/3y5w8z.jpg' },
                         caption: menuCaption,
                         contextInfo: contextInfo
                     },
@@ -78,136 +96,6 @@ cmd({
                 { quoted: mek }
             );
         }
-
-        const subMenus = {
-    1: {
-      title: "OWNER",
-      image: "https://raw.githubusercontent.com/Manmitha96/BOT-PHOTOS/refs/heads/main/BotMenuPhoto/Owner.png",
-      commands: [
-        { name: "restart", use: ".restart" },
-        { name: "block", use: ".block <reply to user>" },
-        { name: "left", use: ".left" },
-        { name: "join", use: ".join <grouplink>" },
-        { name: "update", use: ".update" }
-      ]
-    },
-    2: {
-      title: "MAIN",
-      image: "https://raw.githubusercontent.com/Manmitha96/BOT-PHOTOS/refs/heads/main/BotMenuPhoto/Main.png",
-      commands: [
-        { name: "alive", use: ".alive" },
-        { name: "menu", use: ".menu" },
-        { name: "ping", use: ".ping" },
-        { name: "system", use: ".system" },
-        { name: "vv", use: ".vv <reply to view once>" },
-        { name: "dp", use: ".dp < number or reply >" }
-      ]
-    },
-    3: {
-      title: "DOWNLOAD",
-      image: "https://raw.githubusercontent.com/Manmitha96/BOT-PHOTOS/refs/heads/main/BotMenuPhoto/Download.png",
-      commands: [
-        { name: "song", use: ".song < Text or Link >" },
-        { name: "video", use: ".video < Text or Link >" },
-        { name: "fb", use: ".fb < Link >" },
-        { name: "tiktok", use: ".tiktok < Link >" },
-        { name: "igpost", use: ".igpost < Link >" },
-        { name: "igvideo", use: ".igvideo < Link >" },
-        { name: "ytshort", use: ".ytshort < Link >" },
-        { name: "movie", use: ".movie < Movie Name >" }
-      ]
-    },
-    4: {
-      title: "SEARCH",
-      image: "https://raw.githubusercontent.com/Manmitha96/BOT-PHOTOS/refs/heads/main/BotMenuPhoto/Search.png",
-      commands: [
-        { name: "githubstalk", use: ".githubstalk < username >" },
-        { name: "Coming soon..", use: ".Coming soon.." }
-      ]
-    },
-    5: {
-      title: "AI",
-      image: "https://raw.githubusercontent.com/Manmitha96/BOT-PHOTOS/refs/heads/main/BotMenuPhoto/Al.png",
-      commands: [
-        { name: "ai", use: ".ai < text >" },
-        { name: "gemini", use: ".gemini < text >" }
-      ]
-    },
-    6: {
-      title: "CONVERT",
-      image: "https://raw.githubusercontent.com/Manmitha96/BOT-PHOTOS/refs/heads/main/BotMenuPhoto/Convert.png",
-      commands: [
-        { name: "tosticker", use: ".tosticker <reply to image>" },
-        { name: "toimg", use: ".toimg <reply to sticker>" },
-        { name: "vv", use: ".vv <reply to view once>" }
-      ]
-    },
-    7: {
-      title: "FUN",
-      image: "https://raw.githubusercontent.com/Manmitha96/BOT-PHOTOS/refs/heads/main/BotMenuPhoto/Fun.png",
-      commands: [
-        { name: "hack", use: ".hack" },
-        { name: "animegirl", use: ".animegirl" },
-        { name: "fact", use: ".fact" },
-        { name: "joke", use: ".joke" },
-        { name: "dog", use: ".dog" }
-      ]
-    },
-    8: {
-      title: "GROUP",
-      image: "https://raw.githubusercontent.com/Manmitha96/BOT-PHOTOS/refs/heads/main/BotMenuPhoto/Group.png",
-      commands: [
-        { name: "tagall", use: ".tagall [for tag all members]" },
-        { name: "hidetag", use: ".hidetag [hide tag members]" },
-        { name: "getgpp", use: ".getgpp <for get dp in group>" },
-        { name: "kick", use: ".kick <reply to user>" },
-        { name: "add", use: ".add < number >" },
-        { name: "promote", use: ".promote <reply to user>" },
-        { name: "demote", use: ".demote <reply to user>" },
-        { name: "mute", use: ".mute" },
-        { name: "unmute", use: ".unmute" },
-        { name: "dp", use: ".dp < number or reply >" },
-        { name: "vv", use: ".vv <reply to view once>" },
-        { name: "setname", use: ".setname <new name of group>" },
-        { name: "setdesc", use: ".setdesc <new description of group>" },
-        { name: "invite", use: ".invite <for get group link>" },
-        { name: "removegpp", use: ".removegpp <remove group dp>" },
-        { name: "setgrouppic", use: ".setgrouppic <swipe reply to photo>" },
-        { name: "testgpp", use: ".testgpp <test cmd>" },
-        { name: "quickgpp", use: ".quickgpp <quick set group photo>" },
-        { name: "left", use: ".left <if you want left>" }
-      ]
-    },
-    9: {
-      title: "ANEMI",
-      image: "https://raw.githubusercontent.com/Manmitha96/BOT-PHOTOS/refs/heads/main/BotMenuPhoto/Anemi.png",
-      commands: [
-        { name: "loli", use: ".loli" },
-        { name: "waifu", use: ".waifu" },
-        { name: "neko", use: ".neko" },
-        { name: "megumin", use: ".megumin" },
-        { name: "maid", use: ".maid" },
-        { name: "awoo", use: ".awoo" }
-      ]
-    },
-    10: {
-      title: "OTHER",
-      image: "https://raw.githubusercontent.com/Manmitha96/BOT-PHOTOS/refs/heads/main/BotMenuPhoto/Other.png",
-      commands: [
-        
-        { name: "gpass", use: ".gpass < number >" },
-        { name: "githubstalk", use: ".githubstalk < username >" },
-        { name: "sh", use: ".sh" }
-      ]
-    }
-  };
-
-  const selectedMenu = subMenus[categoryNumber];
-  if (selectedMenu) {
-    let commandList = "";
-    selectedMenu.commands.forEach(cmd => {
-      commandList += `*╭──────────●●►*\n*│Command:* ${cmd.name}\n*│Use:* ${cmd.use}\n*╰──────────●●►*\n\n`;
-    });
         
         const messageID = sentMsg.key.id;
 
@@ -215,21 +103,49 @@ cmd({
         const menuData = {
             '1': {
                 title: "📥 *Download Menu* 📥",
-                content: `👋 *HELLO*
+                content: `👋 *HELLO* @${pushname}
 *╭─「 ᴄᴏᴍᴍᴀɴᴅꜱ ᴘᴀɴᴇʟ」*
-*│◈ 𝚁𝙰𝙼 𝚄𝚂𝙰𝙶𝙴 -* ${ramUsage}
-*│◈ 𝚁𝚄𝙽𝚃𝙸𝙼𝙴 -* ${formattedUptime}
+*│◈ 𝚁𝙰𝙼 𝚄𝚂𝙰𝙶𝙴 -* 56.41MB / 32050MB
+*│◈ 𝚁𝚄𝙽𝚃𝙸𝙼𝙴 -* 11 hours, 56 minutes, 31 seconds
 *╰──────────●●►*
 
 *╭──────────●●►*
-*│⚜️ ${selectedMenu.title} Command List:*
+*│⚜️ OWNER Command List:*
 *╰──────────●●►*
 
-${commandList}➠ *Total Commands in ${selectedMenu.title}*: ${selectedMenu.commands.length}
+*╭──────────●●►*
+*│Command:* restart
+*│Use:* .restart
+*╰──────────●●►*
+
+*╭──────────●●►*
+*│Command:* block
+*│Use:* .block <reply to user>
+*╰──────────●●►*
+
+*╭──────────●●►*
+*│Command:* left
+*│Use:* .left
+*╰──────────●●►*
+
+*╭──────────●●►*
+*│Command:* join
+*│Use:* .join <grouplink>
+*╰──────────●●►*
+
+*╭──────────●●►*
+*│Command:* update
+*│Use:* .update
+*╰──────────●●►*
+
+➠ *Total Commands in OWNER*: 5
 
 *Reply with another number (1-10) for more categories!*
 
-*㋛ 𝙿𝙾𝚆𝙴𝚁𝙳 𝙱𝚈 𝙿_𝙸_𝙺_𝙾 〽️*`,
+*㋛ 𝙿𝙾𝚆𝙴𝚁𝙳 𝙱𝚈 𝙿_𝙸_𝙺_𝙾 〽️*`
+
+                image: "https://raw.githubusercontent.com/Manmitha96/BOT-PHOTOS/refs/heads/main/BotMenuPhoto/Owner.png",
+            },
             '2': {
                 title: "👥 *Group Menu* 👥",
                 content: `╭━━━〔 *𝙶𝚁𝙾𝚄𝙿 𝙼𝙴𝙽𝚄* 〕━━━┈⊷
@@ -481,7 +397,7 @@ ${config.FOOTER}`,
 ${config.FOOTER}`,
                 image: true
             }
-        }
+        };
 
         // Message handler with improved error handling
         const handler = async (msgData) => {
@@ -498,7 +414,26 @@ ${config.FOOTER}`,
 
                     if (menuData[receivedText]) {
                         const selectedMenu = menuData[receivedText];
-                     //fbkjbsafkjhbjsahbfjhbasljbflabgljhbjhbbghrbghbhbhbhbhbhb
+                        
+                        try {
+                            if (selectedMenu.image) {
+                                await conn.sendMessage(
+                                    senderID,
+                                    {
+                                        image: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/3y5w8z.jpg' },
+                                        caption: selectedMenu.content,
+                                        contextInfo: contextInfo
+                                    },
+                                    { quoted: receivedMsg }
+                                );
+                            } else {
+                                await conn.sendMessage(
+                                    senderID,
+                                    { text: selectedMenu.content, contextInfo: contextInfo },
+                                    { quoted: receivedMsg }
+                                );
+                            }
+
                             await conn.sendMessage(senderID, {
                                 react: { text: '✅', key: receivedMsg.key }
                             });
