@@ -1,5 +1,4 @@
 const { cmd } = require('../command');
-const { isAdmin } = require('../lib/isAdmin');
 
 cmd({
     pattern: "promote",
@@ -16,7 +15,7 @@ async(conn, mek, m, {
     if (!isGroup) return reply("❌ This command can only be used in groups.");
 
     // Check if the user is an admin
-    if (!isAdmin) return reply("❌ Only group admins can use this command.");
+    if (!isAdmins) return reply("❌ Only group admins can use this command.");
 
     // Check if the bot is an admin
     if (!isBotAdmins) return reply("❌ I need to be an admin to use this command.");
