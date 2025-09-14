@@ -51,32 +51,13 @@ cmd({
 *🌟 Reply the Number you want to select*
 
 *㋛ 𝙿𝙾𝚆𝙴𝚁𝙳 𝙱𝚈 𝙿_𝙸_𝙺_𝙾 〽️*`;
-        
-        const contextInfo = {
-            mentionedJid: [m.sender],
-            forwardingScore: 999,
-            isForwarded: true,
-            forwardedNewsletterMessageInfo: {
-                newsletterJid: '120363402220977044@newsletter',
-                newsletterName: config.OWNER_NAME,
-                serverMessageId: 143
-            }
-        };
 
-        await conn.sendMessage(m.chat, {
-      video: { url: "https://files.catbox.moe/r97f86.mp4" },
-      mimetype: "video/mp4",
-      gifPlayback: true,
-      ptv: true  
-    }, { quoted: mek });
-
-        // Function to send menu image with timeout
         const sendMenuImage = async () => {
             try {
                 return await conn.sendMessage(
                     from,
                     {
-                        image: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/3y5w8z.jpg' },
+                        image: { url: config.MAINMENU_IMG },
                         caption: menuCaption,
                         contextInfo: contextInfo
                     },
@@ -154,9 +135,29 @@ cmd({
 
 *Reply with another number (1-10) for more categories!*
 
-*㋛ 𝙿𝙾𝚆𝙴𝚁𝙳 𝙱𝚈 𝙿_𝙸_𝙺_𝙾 〽️*`,
+*㋛ 𝙿𝙾𝚆𝙴𝚁𝙳 𝙱𝚈 𝙿_𝙸_𝙺_𝙾 〽️*`;
 
-                image: false
+        const sendMenuImage = async () => {
+            try {
+                return await conn.sendMessage(
+                    from,
+                    {
+                        image: { url: config.MAINMENU_IMG },
+                        caption: menuCaption,
+                        contextInfo: contextInfo
+                    },
+                    { quoted: mek }
+                );
+            } catch (e) {
+                console.log('Image send failed, falling back to text');
+                return await conn.sendMessage(
+                    from,
+                    { text: menuCaption, contextInfo: contextInfo },
+                    { quoted: mek }
+                );
+            }
+        };
+
             },
             '2': {
                 title: "👥 *Group Menu* 👥",
