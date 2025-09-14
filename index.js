@@ -290,7 +290,7 @@ async function connectToWA() {
         const participants = isGroup ? (groupMetadata && groupMetadata.participants) : ''
         const groupAdmins = isGroup && participants ? await getGroupAdmins(participants) : ''
         const isBotAdmins = isGroup ? groupAdmins && groupAdmins.includes(botNumber2) : false
-        const isAdmins = isGroup ? groupAdmins && groupAdmins.includes(sender) : false
+        const isAdmins = isGroup ? groupAdmins.includes(sender) : false;
         const isReact = m.message && m.message.reactionMessage ? true : false
         const reply = (teks) => { conn.sendMessage(from, { text: teks }, { quoted: mek }) }
 
