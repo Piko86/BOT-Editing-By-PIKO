@@ -38,7 +38,7 @@ cmd({
 
 *🌟 Reply the Number you want to select*
 
-*㋛ 𝙿𝙾𝚆𝙴𝚁𝙳 𝙱𝚈 𝙿_𝙸_𝙺_𝙾 〽️*`,
+*㋛ 𝙿𝙾𝚆𝙴𝚁𝙳 𝙱𝚈 𝙿_𝙸_𝙺_𝙾 〽️*`;
 
 
         // Function to send menu image with timeout
@@ -229,7 +229,7 @@ ${commandList}➠ *Total Commands in ${selectedMenu.title}*: ${selectedMenu.comm
 
 *Reply with another number (1-10) for more categories!*
 
-*㋛ 𝙿𝙾𝚆𝙴𝚁𝙳 𝙱𝚈 𝙿_𝙸_𝙺_𝙾 〽️*`;
+*㋛ 𝙿𝙾𝚆𝙴𝚁𝙳 𝙱𝚈 𝙿_𝙸_𝙺_𝙾 〽️*`,
             '2': {
                 title: "👥 *Group Menu* 👥",
                 content: `╭━━━〔 *𝙶𝚁𝙾𝚄𝙿 𝙼𝙴𝙽𝚄* 〕━━━┈⊷
