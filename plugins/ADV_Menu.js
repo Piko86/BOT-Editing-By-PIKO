@@ -11,8 +11,19 @@ cmd({
     category: "menu",
     react: "🧾",
     filename: __filename
-}, async (conn, mek, m, { from, reply }) => {
+},  async (conn, mek, m, { from, senderNumber, pushname, reply }) => {
     try {
+      let uptime = (process.uptime() / 60).toFixed(2);
+      let used = process.memoryUsage().heapUsed / 1024 / 1024;
+      let totalRam = Math.round(require('os').totalmem / 1024 / 1024);
+      let ramUsage = `${Math.round(used * 100) / 100}MB / ${totalRam}MB`;
+
+      // Convert uptime to hours, minutes, seconds
+      let uptimeSeconds = Math.floor(process.uptime());
+      let hours = Math.floor(uptimeSeconds / 3600);
+      let minutes = Math.floor((uptimeSeconds % 3600) / 60);
+      let seconds = uptimeSeconds % 60;
+      let formattedUptime = hours > 0 ? `${hours} hours, ${minutes} minutes, ${seconds} seconds` : `${minutes} minutes, ${seconds} seconds`;
         // Count total commands
         const totalCommands = Object.keys(commands).length;
         
