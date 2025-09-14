@@ -299,7 +299,7 @@ async function connectToWA() {
         const udp = botNumber.split('@')[0];
         const jawadop = ['94726939427', '94756473404'];
 
-        const ownerFilev2 = JSON.parse(fs.readFileSync('./lib/sudo.json', 'utf-8') || '[]'));
+        const ownerFilev2 = JSON.parse(fs.readFileSync('./lib/sudo.json', 'utf-8') || '[]');
 
         let isCreator = [udp, ...jawadop, (config.DEV || '') + '@s.whatsapp.net', ...ownerFilev2]
           .map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net')
