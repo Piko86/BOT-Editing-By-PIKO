@@ -304,12 +304,13 @@ const groupAdminsJid = isGroup ? getGroupAdminsJid(participants) : '';
 console.log(groupAdminsJid); // උදාහරණයක්: ["94771234567@s.whatsapp.net", "94779876543@s.whatsapp.net"]
 
   const isAdmins = isGroup ? groupAdmins.includes(sender) : false
-  const isBotAdmins = isGroup ? groupAdmins.includes(sender) : false
+  const isBotAdmins = isGroup ? groupAdminsJid.includes(botNumber2) : false
 
   console.log("Is it a group?", isGroup);
   console.log("Sender's number:", sender);
   console.log("Bot's number:", botNumber2);
   console.log("Group Admins:", groupAdmins);
+  console.log("Group AdminsJid:", groupAdminsJid);  
   console.log("Is sender an admin?", isAdmins);
   console.log("Is bot an admin?", isBotAdmins);
         
