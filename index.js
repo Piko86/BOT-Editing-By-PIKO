@@ -278,24 +278,38 @@ async function connectToWA() {
   const q = args.join(' ')
   const text = args.join(' ')
   const isGroup = from.endsWith('@g.us')
-  const sender = mek.key.fromMe ? (conn.user.id.split(':')[0]+'@s.whatsapp.net' || conn.user.id) : (mek.key.participant || mek.key.remoteJid)
-  const senderNumber = sender.split('@')[0]
+// Get the sender's number without the JID suffix
+  const sender = mek.key.fromMe ? (conn.user.id.split(':')[0]+'@s.whatsapp.net' || conn.user.id) : (mek.key.participant || mek.key.remoteJid);
+  const senderNumber = sender.split('@')[0];
+  
+  // Get the bot's number without the JID suffix
   const botNumber = conn.user.id.split(':')[0]
   const pushname = mek.pushName || 'Sin Nombre'
   const isMe = botNumber.includes(senderNumber)
   const isOwner = ownerNumber.includes(senderNumber) || isMe
-  const botNumber2 = await jidNormalizedUser(conn.user.id.split(':')[0] + '@s.whatsapp.net');
+  
+  // Get the bot's number without the JID suffix for comparison
+  const botNumber2 = conn.user.id.split(':')[0];
+
   const groupMetadata = isGroup ? await conn.groupMetadata(from).catch(e => {}) : ''
   const groupName = isGroup ? groupMetadata.subject : ''
   const participants = isGroup ? await groupMetadata.participants : ''
+  
   const groupAdmins = isGroup ? await getGroupAdmins(participants) : ''
-  const isAdmins = isGroup ? groupAdmins.includes(sender) : false
-  const isBotAdmins = isGroup ? groupAdmins.includes(botNumber2) : false  
+  // Normalize the group admin numbers by removing the JID suffix (@lid or @s.whatsapp.net)
+  const groupAdminNumbers = groupAdmins.map(admin => admin.split('@')[0]);
 
+  // Now, use the normalized numbers for your checks
+  const isAdmins = isGroup ? groupAdminNumbers.includes(senderNumber) : false
+  const isBotAdmins = isGroup ? groupAdminNumbers.includes(botNumber2) : false
+  
+  // -----------------------
+  // Put your console.logs here to verify the new format
+  // -----------------------
   console.log("Is it a group?", isGroup);
-  console.log("Sender's number:", sender);
-  console.log("Bot's number:", botNumber2);
-  console.log("Group Admins:", groupAdmins);
+  console.log("Sender's number:", senderNumber); // Check this
+  console.log("Bot's number:", botNumber2); // Check this
+  console.log("Group Admins (Normalized):", groupAdminNumbers); // Check this
   console.log("Is sender an admin?", isAdmins);
   console.log("Is bot an admin?", isBotAdmins);
         
