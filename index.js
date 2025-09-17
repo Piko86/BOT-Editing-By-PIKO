@@ -284,13 +284,13 @@ async function connectToWA() {
   const pushname = mek.pushName || 'Sin Nombre'
   const isMe = botNumber.includes(senderNumber)
   const isOwner = ownerNumber.includes(senderNumber) || isMe
-  const botNumber2 = await lidNormalizedUser(conn.user.id);
+  const botNumber2 = await jidNormalizedUser(conn.user.id);
   const groupMetadata = isGroup ? await conn.groupMetadata(from).catch(e => {}) : ''
   const groupName = isGroup ? groupMetadata.subject : ''
   const participants = isGroup ? await groupMetadata.participants : ''
   const groupAdmins = isGroup ? await getGroupAdmins(participants) : ''
   const isAdmins = isGroup ? groupAdmins.includes(sender) : false
-  const isBotAdmins = isGroup ? groupAdmins.includes(botNumber2) : false
+  const isBotAdmins = isGroup ? groupAdmins.includes(sender) : false
 
   console.log("Is it a group?", isGroup);
   console.log("Sender's number:", sender);
