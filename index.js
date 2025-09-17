@@ -289,6 +289,20 @@ async function connectToWA() {
   const groupName = isGroup ? groupMetadata.subject : ''
   const participants = isGroup ? await groupMetadata.participants : ''
   const groupAdmins = isGroup ? await getGroupAdmins(participants) : ''
+  // මෙන්න මේ විදියට "getGroupAdminsJid" කියලා අලුත් function එකක් හදාගන්න.
+  const getGroupAdminsJid = (participants) => {
+    // මේකෙන් group එකේ admins ලාගේ JID විතරක් filter කරගන්නවා
+    let admins = participants.filter(v => v.admin !== null).map(v => v.id);
+    return admins;
+};
+
+// ඊට පස්සේ groupAdminsJid කියලා අලුත් variable එකක් හදාගෙන
+// ඒකට අලුතින් හදාගත්තු function එකේ output එක ගන්න.
+const groupAdminsJid = isGroup ? getGroupAdminsJid(participants) : '';
+
+// දැන් ඔබට groupAdminsJid variable එකේ JID list එක ලැබෙනවා.
+console.log(groupAdminsJid); // උදාහරණයක්: ["94771234567@s.whatsapp.net", "94779876543@s.whatsapp.net"]
+
   const isAdmins = isGroup ? groupAdmins.includes(sender) : false
   const isBotAdmins = isGroup ? groupAdmins.includes(sender) : false
 
