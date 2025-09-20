@@ -99,4 +99,4 @@ ANTI_VV: process.env.ANTI_VV || "false",
 // true for anti once view 
 AUTO_RECORDING: process.env.AUTO_RECORDING || "false"
 // make it true for auto recoding 
-};
+}; 
