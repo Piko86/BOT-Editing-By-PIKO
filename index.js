@@ -65,7 +65,6 @@ const Crypto = require('crypto')
 const path = require('path')
 const prefix = config.PREFIX || '.'
 const { handleMessages, handleGroupParticipantUpdate, handleStatus } = require('./main');
-const config = require('./config');
 
 // Owner number robust handling
 const ownerNumber = config.OWNER_NUMBER || config.OWNER_NUM || config.OWNER || ''
