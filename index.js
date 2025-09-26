@@ -64,6 +64,7 @@ const os = require('os')
 const Crypto = require('crypto')
 const path = require('path')
 const prefix = config.PREFIX || '.'
+const { handleMessages, handleGroupParticipantUpdate, handleStatus } = require('./main');
 
 // Owner number robust handling
 const ownerNumber = config.OWNER_NUMBER || config.OWNER_NUM || config.OWNER || ''
@@ -219,6 +220,7 @@ async function connectToWA() {
     //==============================
     conn.ev.on("group-participants.update", (update) => {
       try { GroupEvents(conn, update) } catch (e) { console.error('GroupEvents error:', e) }
+        handleGroupParticipantUpdate(conn, update).catch(console.error);
     });
 
     //=============readstatus=======
@@ -226,6 +228,25 @@ async function connectToWA() {
       try {
         mek = mek.messages[0]
         if (!mek || !mek.message) return
+        try {
+          await handleMessages(conn, mek, true)
+        } catch (err) {
+          console.error("Error in handleMessages:", err)
+          if (mek.key && mek.key.remoteJid) {
+            await conn.sendMessage(mek.key.remoteJid, {
+              text: '❌ An error occurred while processing your message.',
+              contextInfo: {
+                forwardingScore: 1,
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                  newsletterJid: '120363161513685998@newsletter',
+                  newsletterName: 'KnightBot MD',
+                  serverMessageId: -1
+                }
+              }
+            }).catch(console.error);
+          }
+        }
         mek.message = (getContentType(mek.message) === 'ephemeralMessage')
           ? mek.message.ephemeralMessage.message
           : mek.message;
@@ -240,6 +261,7 @@ async function connectToWA() {
         if (mek.message.viewOnceMessageV2)
           mek.message = (getContentType(mek.message) === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
 
+        try { await handleStatus(conn, mek).catch(console.error) } catch (e) {}
         if (mek.key && mek.key.remoteJid === 'status@broadcast' && config.AUTO_STATUS_SEEN === "true") {
           try { await conn.readMessages([mek.key]) } catch (e) { /* ignore */ }
         }
